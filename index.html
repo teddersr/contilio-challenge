@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Contilio Three.js Code Challenge</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.js"></script>
+    <script src="http://mrdoob.github.io/stats.js/build/stats.min.js"></script>
+
+    <script type="module">
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      let renderer = new THREE.WebGLRenderer();
+      renderer.setSize(width, height);
+      document.body.appendChild(renderer.domElement);
+      const gui = new dat.GUI();
+      const stats = new Stats();
+      stats.setMode(0);
+      document.body.appendChild(stats.domElement);
+      let scene = new THREE.Scene();
+      let camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
+      camera.position.z = 75;
+      scene.add(camera);
+      let light = new THREE.PointLight(0xffffff);
+      light.position.set(-100, 200, 100);
+      scene.add(light);
+
+      const count = Math.pow(30, 3);
+      
+      let geometry = new THREE.BoxGeometry(0.75, 0.75, 0.75);
+      let material = new THREE.MeshNormalMaterial();
+      let mesh = new THREE.InstancedMesh(geometry, material, count);
+      mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+
+      const matrix = new THREE.Matrix4();
+      let i = 0;
+      for (let x = 0; x < 30; x++) {
+        for (let y = 0; y < 30; y++) {
+          for (let z = 0; z < 30; z++) {
+            matrix.setPosition(x-15, y-15, z-15);
+
+            mesh.setMatrixAt(i, matrix);
+
+            i++;
+          }
+        }
+      }
+
+      scene.add(mesh);
+
+      function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      }
+      function animate() {
+        renderer.render(scene, camera);
+        mesh.rotation.x += 0.002;
+        mesh.rotation.y += 0.004;
+        requestAnimationFrame(animate);
+        stats.update();
+      }
+      resize();
+      stats.begin();
+      renderer.render(scene, camera);
+      stats.end();
+      animate();
+      window.addEventListener("resize", resize);
+    </script>
+  </body>
+</html>

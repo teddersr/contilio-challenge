@@ -1,0 +1,46 @@
+.dash-container {
+  width: 100%;
+  padding: 20px;
+  height: 100%;
+  
+  .data-row {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+    .title, .ranges {
+        padding: 0 20px;
+    }
+
+    .attributesTable,
+    .attributesChart {
+      box-sizing: border-box;
+      padding: 20px;
+      width: 400px;
+    //   .container{
+    //     width: 400px;
+    //   }
+    }
+    .attributesTable {
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+    }
+  }
+}
